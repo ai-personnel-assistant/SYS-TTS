@@ -1,0 +1,18 @@
+version: '3.1'
+
+services:
+    api_vosk:
+        image: python:3.11
+        container_name: SYS-TTS
+        command: bash -c "pip install --no-cache-dir -r requirements.txt && gunicorn -w 4 -b 0.0.0.0:3700 app:app"
+        ports:
+            - 3700:3700
+        working_dir: /srv/app
+        volumes:
+            - type: bind
+              source: ./
+              target: /srv/app
+            - type: bind
+              source: ../audio
+              target: /srv/app/audio
+        tty: true
